@@ -493,7 +493,7 @@
 				    "rel_time" : this.info.rel_time.trim(),
 				    "introduce" : this.info.introduce.trim(),
 				    "remind_tip" : this.info.remind_tip.trim(),
-				    "news_id": this.info.news_id.trim().split(','),
+				    "news_id": this.info.news_id.trim() ? this.info.news_id.trim().split(',') : [],
 				    "popular" : this.info.popular,
 				    "allow_reply" : this.info.allow_reply,
 				    "openSwiper": this.info.openSwiper,
