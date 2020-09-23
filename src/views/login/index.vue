@@ -27,11 +27,10 @@
 					    </div>
 			    	</el-form-item>
 					<el-form-item class="text-right">
-				    	<el-button v-show="!btnStates" type="success" size="small" @click="onSubmit">
+				    	<el-button :loading="loading" type="success" size="small" @click="onSubmit">
 				    		<i  class="fa fa-paper-plane pr5" aria-hidden="true"></i>
 				    		<span>登录</span>
 			    		</el-button>
-			    		<el-button v-show="btnStates" type="primary" size="small" :loading="true">加载</el-button>
 				    </el-form-item>
 				</el-form>
 			</div>
@@ -44,9 +43,9 @@
 	export default {
 		data(){
 			return {
+				loading: false,
 				imgCodeLink: "", // base64
 				getTime: '',
-				btnStates: false,
 				showSelect: false,
 				focusObj: {
 					account: false,
@@ -117,6 +116,10 @@
 				})
 			},
 			onSubmit(){
+				if(this.loading){
+					return
+				}
+				this.loading = true;
 				AdminLogin({
 					userName: this.form.account,
 					passWord: this.form.password,
@@ -142,6 +145,9 @@
 				})
 				.catch((err) => {
 					this.ajaxMsgTips(err);
+				})
+				.finally(() => {
+					this.loading = false;
 				})
 			},
 		},
