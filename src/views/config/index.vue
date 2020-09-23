@@ -299,6 +299,19 @@
 							</div>
 						</div>
 						<div class="row-item clearfix">
+							<label class="pull-left" for="">APP最新标识：</label>
+							<div class="row-con">
+								<div class="pub-flex">
+									<div class="pub-flex1">
+										<el-input size="small" v-model="config.appUniqueKey" placeholder="请输入内容"></el-input>
+									</div>
+									<div class="pub-flex" style="width: 95px;justify-content: flex-end;">
+										<el-button @click="createAppUUID" size="small" type="success">点击生成</el-button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row-item clearfix">
 							<label class="pull-left" for="">APP升级信息：</label>
 							<div class="row-con">
 								<div>
@@ -375,12 +388,19 @@
 					curTempPath: '',                 // 当前模板路径
 					openAppMainNotice: true,         // 开启/关闭 App首屏公告
 					appUpgrade: false,               // 开启app升级接口
+					appUniqueKey: '',                // app当前最新的uuid
 					upgradeInfo: '',                 // App升级公告
 					appInitNoticeCon: '',            // App首屏公告内容
 				}
 			}
 		},
 		methods: {
+			createAppUUID(){
+				var temp_url = URL.createObjectURL(new Blob());
+				var uuid = temp_url.toString();
+				URL.revokeObjectURL(temp_url);
+				this.config.appUniqueKey = uuid.substr(uuid.lastIndexOf("/") + 1);
+			},
 			savaConfig(){
 				let data = Object.assign({}, this.config);
 				Reflect.deleteProperty(data, 'curTempPath');
