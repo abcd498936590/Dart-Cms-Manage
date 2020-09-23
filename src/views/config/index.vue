@@ -312,6 +312,14 @@
 							</div>
 						</div>
 						<div class="row-item clearfix">
+							<label class="pull-left" for="">APP下载地址：</label>
+							<div class="row-con">
+								<div>
+									<el-input size="small" v-model="config.downloadLink" placeholder="请输入内容"></el-input>
+								</div>
+							</div>
+						</div>
+						<div class="row-item clearfix">
 							<label class="pull-left" for="">APP升级信息：</label>
 							<div class="row-con">
 								<div>
@@ -389,6 +397,7 @@
 					openAppMainNotice: true,         // 开启/关闭 App首屏公告
 					appUpgrade: false,               // 开启app升级接口
 					appUniqueKey: '',                // app当前最新的uuid
+					downloadLink: '',                // app升级下载地址
 					upgradeInfo: '',                 // App升级公告
 					appInitNoticeCon: '',            // App首屏公告内容
 				}
