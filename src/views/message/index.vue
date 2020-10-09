@@ -15,7 +15,6 @@
 					</el-input>
 				</div>
 				<div class="pull-right edit">
-					<el-button @click="editDialog = true" size="small" class="" type="success" icon="el-icon-plus">添加用户</el-button>
 					<el-button @click="pullData" size="small" class="" type="primary" icon="el-icon-refresh">刷新数据</el-button>
 				</div>
 			</div>
@@ -174,7 +173,6 @@
 		data(){
 			return {
 				loading: true,
-				editDialog: false,
 				//
 				editBox: false,
 				searchVal: '',      // 搜索框内容
