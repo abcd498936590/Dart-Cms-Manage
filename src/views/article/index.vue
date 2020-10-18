@@ -5,8 +5,8 @@
 			<div class="clearfix">
 				<div class="label pull-left">文章管理</div>
 				<div class="query pa">
-					<el-input @change="pullData" size="small" placeholder="请输入内容" v-model="searchVal" class="input-with-select">
-						<el-button class="pointer" @click="pullData" slot="append" icon="el-icon-search"></el-button>
+					<el-input @keyup.enter.native="searchData" size="small" placeholder="请输入内容" v-model="searchVal" class="input-with-select">
+						<el-button class="pointer" @click="searchData" slot="append" icon="el-icon-search"></el-button>
 					</el-input>
 				</div>
 				<div class="pull-right edit">
