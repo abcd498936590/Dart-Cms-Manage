@@ -5,9 +5,19 @@
 
 [Dart-Cms完整项目地址](https://github.com/abcd498936590/Dart-Cms)
 
+## fijkplayer_skin（fijkplayer皮肤）
+
+[flutter fijkplayer 的一款皮肤](https://github.com/abcd498936590/fijkplayer_skin)
+
+## Dart-Cms-Flutter（安卓）
+
+[安卓APP使用google flutter技术开发](https://github.com/abcd498936590/Dart-Cms-Flutter)
+
 ## Dart-Cms-Script
 
 [Dart-Cms插件教程](https://github.com/abcd498936590/Dart-Cms-Script)
+
+
 
 ## 预览
 <p align="center">
