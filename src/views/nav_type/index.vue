@@ -66,13 +66,13 @@
 						</div>
 					</div>
 				</div>
-				<div class="row-item clearfix">
+				<div v-show="isShowEditType" class="row-item clearfix">
 					<label class="pull-left label" for="">分级分类：</label>
 					<div class="row-con">
 						<div>
 							<el-select @change="changeNavType" style="width: 100%;" size="small" v-model="target.parent_id" placeholder="请选择">
 								<el-option
-									v-for="item in allNavType"
+									v-for="item in curNavType"
 									:key="item._id"
 									:label="item.name"
 									:value="item._id">
@@ -97,8 +97,10 @@
 					<label class="pull-left label" for="">导航类型：</label>
 					<div class="row-con">
 						<div class="pub-flex" style="height: 32px; line-height: 32px;">
-							<el-radio v-model="target.nav_type" label="video">视频</el-radio>
-  							<el-radio v-model="target.nav_type" label="article">文章</el-radio>
+  							<el-radio-group @change="changeCurSelectTypeList" v-model="target.nav_type">
+								<el-radio label="video">视频</el-radio>
+  								<el-radio label="article">文章</el-radio>
+  							</el-radio-group>
 						</div>
 					</div>
 				</div>
@@ -160,6 +162,8 @@
         		},
         		isEdit: false,
         		editDialog: false,
+        		// 当前类型 对应的 选择器
+        		curNavType: [],
         		allNavType: [],
         		allNavJson: {},
         		//
@@ -179,15 +183,35 @@
 			}
 		},
 		methods: {
+			changeCurSelectTypeList(label = false){
+				// 清空已选择父节点的ID
+				this.target.parent_id = false;
+				// 加工 导航类型对应的 分类选择器
+				let copyTypeList = this.allNavType.filter((item) => {
+					// label存在 更改 ，不存在则是新建时候，有延迟造成必须再次处理
+					if(label && label === item.nav_type){
+						return {
+							_id: item._id,
+							name: item.name
+						}
+					}
+					if(item.nav_type === this.target.nav_type){
+						return {
+							_id: item._id,
+							name: item.name
+						}
+					}
+				});
+				this.curNavType = [{_id: false, name: '顶级分类'}].concat(copyTypeList);
+			},
 			showDialog(){
+				this.changeCurSelectTypeList();
 				this.isShowEditType = true;
 				this.editDialog = true;
 			},
 			changeNavType(tar){
-				this.isShowEditType = !tar ? true : false;
 				if(tar){
 					this.target.nav_type = this.allNavJson[tar];
-					console.log(this.target.nav_type);
 				}
 			},
 			savaNavSort(){
@@ -295,7 +319,7 @@
         				description: row.seo.description,
         			}
 				}
-				this.isShowEditType = row.parent_id ? false : true;
+				this.isShowEditType = false;
 				this.isEdit = true;
 				this.editDialog = true;
 			},
@@ -325,6 +349,9 @@
 				}
 			},
 			resetEditInfo(done){
+				if(done && typeof done === 'function'){
+					done();
+				}
 				this.target = {
 					name: '',
         			parent_id: false,
@@ -338,9 +365,7 @@
 				}
 				this.isShowEditType = false;
 				this.isEdit = false;
-				if(done && typeof done === 'function'){
-					done();
-				}
+
 			},
 			getTableHeight(){
 				let getObjH = (className) => {
@@ -382,13 +407,14 @@
 						// 重设index，防止出错
 						this.resetNavTypeItemIndex();
 						//
-						let arr = [{_id: false, name: '顶级分类'}];
+						let arr = [];
 						let obj = {};
 						for(let arg of res.data.value){
 							obj[arg._id] = arg.nav_type;
 							arr.push({
 								_id: arg._id,
-								name: arg.name
+								name: arg.name,
+								nav_type: arg.nav_type,
 							})
 						}
 						this.allNavJson = obj;
