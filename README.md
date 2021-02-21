@@ -3,8 +3,8 @@
 
 ## 其他开源项目
 
-* [Dart-Cms](https://github.com/abcd498936590/Dart-Cms-Flutter)  =>> Dart-Cms完整项目
-* [Dart-Cms-Flutter](https://github.com/abcd498936590/Dart-Cms-Manage)   =>> Dart-Cms的安卓客户端，使用flutter开发
+* [Dart-Cms](https://github.com/abcd498936590/Dart-Cms)  =>> Dart-Cms完整项目
+* [Dart-Cms-Flutter](https://github.com/abcd498936590/Dart-Cms-Flutter)   =>> Dart-Cms的安卓客户端，使用flutter开发
 * [Dart-CMS-Script](https://github.com/abcd498936590/Dart-Cms-Script)  =>> Dart-Cms插件教程，插件使用，插件开发
 * [flutter fijkplayer](https://github.com/abcd498936590/fijkplayer_skin)  =>> Flutter fijkplayer的一款皮肤
 
