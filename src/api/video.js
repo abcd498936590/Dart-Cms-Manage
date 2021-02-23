@@ -1,5 +1,15 @@
 import request from '@utils/request'
 
+// 生成静态化页面
+export function CreateStatic(data, options){
+	return request({
+			url: '/manage/video/createVideoStatic',
+		    method: 'POST',
+		    data: data || {}
+		},
+		options || {}
+	);
+}
 // 获取全部视频
 export function GetVideoList(data, options){
 	return request({

@@ -73,6 +73,12 @@ h1,h2,h3,h4,h5,h5,p{
 .pb20{
 	padding-bottom: 20px!important;
 }
+.pl5{
+	padding-left: 5px!important;
+}
+.pr5{
+	padding-right: 5px!important;
+}
 .pl10{
 	padding-left: 10px!important;
 }
@@ -114,6 +120,9 @@ h1,h2,h3,h4,h5,h5,p{
 }
 .mb20{
 	margin-bottom: 20px!important;
+}
+.mb10{
+	margin-bottom: 10px!important;
 }
 /* public flex */
 .pub-flex{

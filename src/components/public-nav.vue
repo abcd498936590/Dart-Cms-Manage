@@ -111,6 +111,7 @@
 			}
 		},
 		methods: {
+			// 修改密码
 			savePassWord(){
 				if(!this.newPassWord.trim()){
 					this.ajaxMsgTips({data: {code: 500, text: '密码不得为空！'}});
@@ -130,6 +131,7 @@
 					this.showState2 = false;
 				})
 			},
+			// 修改用户信息
 			saveUserInfo(){
 				if(!this.newNickName.trim()){
 					this.ajaxMsgTips({data: {code: 500, text: '昵称不得为空！'}});
@@ -156,9 +158,11 @@
 					this.showState = false;
 				})
 			},
+			// 跳转首页
 			goWebIndeo(){
 				window.open('/');
 			},
+			// 修改昵称
 			setNickName(){
 				let userInfo = catStorage('userInfo')
 				this.nickName = userInfo.nickName;

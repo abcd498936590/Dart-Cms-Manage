@@ -230,9 +230,14 @@
 				<el-table-column
 			      	fixed="right"
 			      	label="操作"
-			      	width="280">
+			      	width="334">
 			      	<template slot-scope="scope">
 						<div class="text-center">
+							<el-tooltip class="item" effect="dark" content="静态化" placement="top">
+				        		<el-button @click="$Bus.$emit('changeVideoStaticDialog', {'_id': scope.row._id, 'videoTitle': scope.row.videoTitle, 'showState': true})" size="mini" type="danger">
+					        		<i class="fa fa-file" aria-hidden="true"></i>
+				        		</el-button>
+			        		</el-tooltip>
 							<el-tooltip class="item" effect="dark" content="查看信息" placement="top">
 				        		<el-button @click="$Bus.$emit('changeVideoDrawerState', {data: {'play_id': scope.row._id, 'video_info': scope.row}, 'is_pull': true, 'showState': true})" size="mini" type="success">
 					        		<i class="fa fa-certificate" aria-hidden="true"></i>
@@ -278,6 +283,8 @@
 			    </div>
 			</div>
 		</div>
+		<!-- 中间 静态化 -->
+		<dialog-static />
 		<!-- 中间 评分 -->
 		<dialog-rate @update="pullData({loading: false, msgTip: false})" />
 		<!-- 右侧 视频 详细信息 抽屉 -->
@@ -293,6 +300,7 @@
 	import DrawerInfo from '@components/video/drawer-info.vue'
 	import DialogPlayer from '@components/video/dialog-player.vue'
 	import DialogRate from './dialog-rate.vue'
+	import DialogStatic from './dialog-static.vue'
 	import DialogSource from './dialog-source.vue'
 	// api
 	import { GetVideoList, GetCurVideoList, VideosRemove, ChangeState, AddScource, RemoveScource, UpdateScource, DirCoverImgs, DirPosterImgs } from '@api/video'
@@ -300,6 +308,7 @@
 		components: {
 			DialogRate,
 			DrawerInfo,
+			DialogStatic,
 			DialogPlayer,
 			DialogSource,
 		},

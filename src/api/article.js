@@ -1,5 +1,15 @@
 import request from '@utils/request'
 
+// 生成静态文件
+export function createStatic(data, options){
+	return request({
+			url: '/manage/article/createStaticFile',
+		    method: 'POST',
+		    data: data || {}
+		},
+		options || {}
+	);
+}
 // 获取全部文章
 export function GetAllArticle(data, options){
 	return request({

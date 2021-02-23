@@ -255,7 +255,7 @@
 								<div class="pr20 pub-flex" style="width: 200px;">
 									<span class="row-label">源名称：</span>
 									<div class="pub-flex1">
-										<el-input @change="addOneSource" size="small" v-model="curSourceName" placeholder="请输入内容"></el-input>
+										<el-input @keyup.enter="addOneSource" size="small" v-model="curSourceName" placeholder="请输入内容"></el-input>
 									</div>
 								</div>
 								<el-button @click="addOneSource" size="small" type="primary">新增一组源</el-button>

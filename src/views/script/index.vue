@@ -140,10 +140,27 @@
 						<div v-for="item in target.options" class="row-item clearfix">
 							<label class="pull-left" for="">{{item.key}}：</label>
 							<div class="row-con">
-								<div class="pub-flex pub-jc-start pub-ai-center" style="height: 32px;">
+								<div class="pub-flex pub-jc-start pub-ai-center">
 									<el-input v-if="item.type === 'string'" size="small" v-model="item.val" placeholder="请输入内容"></el-input>
 									<el-input v-else-if="item.type === 'number'" size="small" v-model.number="item.val" placeholder="请输入内容"></el-input>
-									<el-switch v-else-if="item.type === 'boolean'" v-model="item.val" active-color="#13ce66" inactive-color="#dcdfe6"></el-switch>
+									<div v-else-if="item.type === 'boolean'" style="height: 32px;" class="pub-flex pub-jc-start pub-ai-center">
+										<el-switch v-model="item.val" active-color="#13ce66" inactive-color="#dcdfe6"></el-switch>
+									</div>
+									<el-input v-else-if="item.type === 'textarea'" v-model="item.val" type="textarea" autosize placeholder="请输入内容" ></el-input>
+									<div v-else-if="item.type === 'bindType'">
+										<el-row :gutter="20">
+											<el-col :key="typeItemKey" v-for="(typeItem, typeItemKey) in item.list" :span="12">
+												<div class="mb10 clearfix">
+													<label class="pull-left" for="">{{typeItemKey}}：</label>
+													<div class="row-con">
+														<el-select size="small" v-model="item.list[typeItemKey]" placeholder="请选择">
+															<el-option v-for="selectItem in restaurants" :key="selectItem._id" :label="selectItem.name" :value="selectItem._id"></el-option>
+														</el-select>
+													</div>
+												</div>
+											</el-col>
+										</el-row>
+									</div>
 								</div>
 								<div v-if="item.hasOwnProperty('note')" class="text-left">
 									<p style="color: #F56C6C;">{{item.note}}</p>
@@ -161,6 +178,7 @@
 </template>
 <script>
 	import { GetScriptList, RunScript, RemoveScript, UploadScript, UpdateScript, StopRunScript } from '@api/script'
+	import { GetNavList } from '@api/nav_type'
 	import { isDev, catStorage } from '@utils/tools'
 	export default {
 		data(){
@@ -175,6 +193,7 @@
 				editDialog: false,
 				//
 				tableData: [],
+				restaurants: [],
 				loading: false,
 				tabHight: 0,        // 动态绑定  el-table高度计算
 			}
@@ -337,10 +356,29 @@
 				.finally(() => {
 					this.loading = false;
 				})
+			},
+			// 拉所有的类型
+			pullAllTypes(){
+				GetNavList({}, {loading: true})
+				.then(res => {
+					if(res.data.code === 200){
+						let arr = [{_id: "", name: '(空：不绑定)'}];
+						for(let arg of res.data.value){
+							arr.push({'name': arg.name, '_id': arg._id})
+							if(arg.children && arg.children.length){
+								for(let arg2 of arg.children){
+									arr.push({'name': '┣━' + arg2.name, '_id': arg2._id})
+								}
+							}
+						}
+						this.restaurants = arr;
+					}
+				})
 			}
 		},
 		created(){
 			this.pullData(true);
+			this.pullAllTypes();
 		},
 		mounted(){
 			this.$nextTick(() => {

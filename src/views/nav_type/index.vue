@@ -307,6 +307,7 @@
 				})
 			},
 			showEditDialog(row){
+				this.changeCurSelectTypeList();
 				this.target = {
 					_id: row._id,
 					name: row.name,
@@ -319,6 +320,7 @@
         				description: row.seo.description,
         			}
 				}
+
 				this.isShowEditType = false;
 				this.isEdit = true;
 				this.editDialog = true;

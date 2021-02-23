@@ -162,9 +162,14 @@
 				<el-table-column
 			      	fixed="right"
 			      	label="操作"
-			      	width="175">
+			      	width="228">
 			      	<template slot-scope="scope">
 						<div class="text-center">
+							<el-tooltip class="item" effect="dark" content="静态化" placement="top">
+				        		<el-button @click="createStaticFile(scope.row._id)" size="mini" type="danger">
+					        		<i class="fa fa-file" aria-hidden="true"></i>
+				        		</el-button>
+			        		</el-tooltip>
 							<el-tooltip class="item" effect="dark" content="查看信息" placement="top">
 				        		<el-button @click="$Bus.$emit('changeArticleDrawerState', {data: {'aid': scope.row._id, 'article_info': scope.row}, 'is_pull': true, 'showState': true})" size="mini" type="success">
 					        		<i class="fa fa-certificate" aria-hidden="true"></i>
@@ -208,7 +213,8 @@
 	// components
 	import DrawerInfo from '@components/article/drawer-info.vue'
 	// api
-	import { GetAllArticle, ChangeArtState, RemoveArticle, GetCurArticle } from '@api/article'
+	import { createStatic, GetAllArticle, ChangeArtState, RemoveArticle, GetCurArticle } from '@api/article'
+	import { isDev } from '@utils/tools'
 	export default {
 		components: {
 			DrawerInfo,
@@ -227,9 +233,23 @@
 				pageTotal: 0,       // 总数据条数
 				curPageNum: 1,      // 当前第几页
 				curPageLen: 15,     // 默认每页多少条数据
+				remoteUrl: '',      // 当前地址
 			}
 		},
 		methods: {
+			// 生成静态文件
+			createStaticFile(_id){
+				// 本地不允许执行，必须部署远程
+				if(isDev()){
+					this.ajaxMsgTips({data: {code: 500, text: '本地不允许执行，必须部署远程'}});
+					return
+				}
+				// 通过
+				createStatic({_id, remoteUrl: this.remoteUrl},{loading: true})
+				.then((res) => {
+					this.ajaxMsgTips(res);
+				})
+			},
 			// 提醒删除
 			remindDialog(arr, remindText, fnName, conf){
 				this.$confirm(remindText, '提示', {
@@ -362,6 +382,8 @@
 			}
 		},
 		created(){
+			let remote = window.location;
+			this.remoteUrl = remote.protocol + '//' + remote.host;
 			this.pullData({loading: false, msgTip: true});
 		},
 		mounted(){
