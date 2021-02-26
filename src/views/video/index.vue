@@ -4,7 +4,52 @@
 		<div class="like-edit pl20 pr20">
 			<div class="clearfix">
 				<div class="label pull-left">视频管理</div>
-				<div class="query pa">
+				<div class="query pa pub-flex pub-jc-center">
+					<div class="pub-flex pub-jc-center pub-ai-center">
+						<div class="picker-label">分类:</div>
+						<div>
+							<el-select size="small" style="width: 120px;" v-model="matchQuery['video_type']"  placeholder="分类">
+								<el-option
+									v-for="item in restaurants"
+									:key="item.name"
+									:label="item.name"
+									:value="item._id">
+								</el-option>
+	    					</el-select>
+						</div>
+						<div class="picker-label">置顶:</div>
+    					<div>
+    						<el-select size="small" style="width: 95px;" v-model="matchQuery['popular']" placeholder="置顶">
+								<el-option label="【全部】" value=""></el-option>
+								<el-option label="开/置顶" :value="true"></el-option>
+								<el-option label="关/置顶" :value="false"></el-option>
+	    					</el-select>
+    					</div>
+    					<div class="picker-label">轮播:</div>
+    					<div>
+    						<el-select size="small" style="width: 95px;" v-model="matchQuery['openSwiper']" placeholder="轮播">
+								<el-option label="【全部】" value=""></el-option>
+								<el-option label="开/轮播" :value="true"></el-option>
+								<el-option label="关/轮播" :value="false"></el-option>
+	    					</el-select>
+    					</div>
+    					<div class="picker-label">留言:</div>
+    					<div>
+    						<el-select size="small" style="width: 95px;" v-model="matchQuery['allow_reply']" placeholder="留言">
+								<el-option label="【全部】" value=""></el-option>
+								<el-option label="开/留言" :value="true"></el-option>
+								<el-option label="关/留言" :value="false"></el-option>
+	    					</el-select>
+    					</div>
+    					<div class="picker-label">显示:</div>
+    					<div>
+    						<el-select size="small" style="width: 95px;" v-model="matchQuery['display']" placeholder="显示">
+								<el-option label="【全部】" value=""></el-option>
+								<el-option label="开/显示" :value="true"></el-option>
+								<el-option label="关/显示" :value="false"></el-option>
+	    					</el-select>
+    					</div>
+					</div>
 					<el-input @keyup.enter.native="searchData" size="small" placeholder="请输入内容" v-model="searchVal" class="input-with-select">
 						<el-button class="pointer" @click="searchData" slot="append" icon="el-icon-search"></el-button>
 					</el-input>
@@ -304,6 +349,7 @@
 	import DialogSource from './dialog-source.vue'
 	// api
 	import { GetVideoList, GetCurVideoList, VideosRemove, ChangeState, AddScource, RemoveScource, UpdateScource, DirCoverImgs, DirPosterImgs } from '@api/video'
+	import { GetNavList } from '@api/nav_type'
 	export default {
 		components: {
 			DialogRate,
@@ -326,6 +372,14 @@
 				pageTotal: 0,       // 总数据条数
 				curPageNum: 1,      // 当前第几页
 				curPageLen: 15,     // 默认每页多少条数据
+				restaurants: [],    // 分类选择列表
+				matchQuery: {
+					'video_type': '',  // 当前选择的分类
+					'popular': '',     // 当前是否置顶
+					'openSwiper': '',  // 当前是否轮播
+					'allow_reply': '', // 当前是否留言
+					'display': '',     // 当前是否显示
+				},
 			}
 		},
 		methods: {
@@ -433,6 +487,30 @@
 
 				this.tabHight = winH - (headerH + 44 + likeEditH + pageListH + filterCoodH + getObjStyleNum(tableObj, 'margin-top') + getObjStyleNum(cptCon, 'padding-top') + getObjStyleNum(cptCon, 'padding-bottom'));
 			},
+			// 导航数据
+			pullNavData(){
+				// 导航数据
+				GetNavList({}, {loading: false})
+				.then(res => {
+					if(res.data.code === 200){
+						let arr = [{'name': '【不选择】', '_id': ''}];
+						for(let arg of res.data.value){
+							// 如果不是视频分类，略过
+							if(arg.nav_type !== 'video'){
+								continue;
+							}
+							// 通过视频分类
+							arr.push({'name': arg.name, '_id': arg._id})
+							if(arg.children && arg.children.length){
+								for(let arg2 of arg.children){
+									arr.push({'name': '┣━' + arg2.name, '_id': arg2._id})
+								}
+							}
+						}
+						this.restaurants = arr;
+					}
+				})
+			},
 			// 获取列表数据
 			pullData({loading=false, msgTip=false}){
 				this.loading = true;
@@ -443,6 +521,17 @@
 				if(this.searchVal){
 					query.search = this.searchVal;
 				}
+				// 附加参数
+				let mq = this.matchQuery;
+				let type = {};
+				for(let attr in mq){
+					let curVal = mq[attr];
+					// 必须炎等
+					if(curVal !== ''){
+						type[attr] = curVal;
+					}
+				}
+				query['type'] = type;
 				GetVideoList(query, {loading})
 				.then(res => {
 					if(msgTip){
@@ -461,6 +550,7 @@
 		},
 		created(){
 			this.pullData({loading: false, msgTip: true});
+			this.pullNavData();
 		},
 		mounted(){
 			this.$nextTick(() => {
@@ -519,11 +609,16 @@
 			line-height: 60px;
 		}
 		.query{
-			width: 300px;
+			width: 900px;
 			left: 50%;
 			top: 50%;
-			margin-left: -150px;
+			margin-left: -450px;
 			margin-top: -16px;
+			.picker-label{
+				text-align: center;
+				width: 40px;
+				font-size: 13px
+			}
 		}
 		.edit{
 			margin-top: 16px;
