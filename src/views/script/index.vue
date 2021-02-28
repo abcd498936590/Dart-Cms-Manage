@@ -128,7 +128,7 @@
 									<el-input size="small" v-model.number="target.timeout" placeholder="请输入内容"></el-input>
 								</div>
 								<div>
-									<p class="text-left" style="color: #F56C6C;">采集脚本建议输入 <span style="#67C23A">7200000</span> ，单位毫秒</p>
+									<p class="text-left" style="color: #F56C6C;">采集脚本建议输入 <span style="#67C23A">180</span> ，单位（分钟）</p>
 								</div>
 							</div>
 						</div>
