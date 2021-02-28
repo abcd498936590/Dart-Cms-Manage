@@ -55,7 +55,7 @@
 					:show-overflow-tooltip="true"
 					width="110">
 					<template slot-scope="scope">
-						<span>{{ scope.row.timeout / 60000 }} 分</span>
+						<span>{{ scope.row.timeout }} 分</span>
 					</template>
 				</el-table-column>
 				<el-table-column
