@@ -198,7 +198,7 @@
 										active-color="#13ce66"
 										inactive-color="#dcdfe6">
 									</el-switch>
-									<p class="pl20" style="color: #F56C6C;">禁用注册后无法注册新用户，请注意！</p>
+									<p class="pl20" style="color: #F56C6C;">开启后需添加域名白名单，请注意！</p>
 								</div>
 								<div v-if="config.allowDomainAccess">
 									<el-input
