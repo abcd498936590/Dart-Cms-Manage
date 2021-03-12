@@ -7,7 +7,7 @@
 			:before-close="closePlayer"
 			width="800px">
 			<div class="player-box" v-if="play.type === 'iframe'">
-				<iframe :src="play.url"></iframe>
+				<iframe webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" :src="play.url"></iframe>
 			</div>
 			<div class="player-box" v-if="play.type === 'player' && this.is_hls">
 				<video-player
