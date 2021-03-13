@@ -151,9 +151,9 @@
 										<el-row :gutter="20">
 											<el-col :key="typeItemKey" v-for="(typeItem, typeItemKey) in item.list" :span="12">
 												<div class="mb10 clearfix">
-													<label class="pull-left" for="">{{typeItemKey}}：</label>
+													<label class="pull-left" for="">{{item.list[typeItemKey].name}}：</label>
 													<div class="row-con">
-														<el-select size="small" v-model="item.list[typeItemKey]" placeholder="请选择">
+														<el-select size="small" v-model="item.list[typeItemKey].bindId" placeholder="请选择">
 															<el-option v-for="selectItem in restaurants" :key="selectItem._id" :label="selectItem.name" :value="selectItem._id"></el-option>
 														</el-select>
 													</div>
